@@ -81,11 +81,31 @@ RSpec.describe Market do
   end
 
   describe '#overstocked_items' do
-    xit 'shows any item that is overstocked' do
+    it 'shows any item that is overstocked' do
       @market.add_vendor(@vendor1)
       @market.add_vendor(@vendor2)
       @market.add_vendor(@vendor3)
       expect(@market.overstocked_items).to eq([@item1])
+    end
+  end
+
+  describe '#date' do
+    xit 'shows the date of the market' do
+      expect(@market.date).to eq('08/31/2023')
+    end
+  end
+
+  describe '#sell' do
+    xit 'sells an item if we have enough in stock to do so' do
+      expect(@market.sell(@item1, 40)).to be false
+      expect(@market.sell(@item2, 5)).to be true
+      expected_inventory = {
+        @item1 => { quantity: 100, vendors: [@vendor1, @vendor3] },
+        @item2 => { quantity: 2, vendors: [@vendor1] },
+        @item3 => { quantity: 25, vendors: [@vendor2] },
+        @item4 => { quantity: 50, vendors: [@vendor2] }
+      }
+      expect(@market.total_inventory).to eq(expected_inventory)
     end
   end
 end
